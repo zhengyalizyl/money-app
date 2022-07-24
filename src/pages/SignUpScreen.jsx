@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
-import { auth } from '../firebase'
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import Loader from '../components/Loader'
+import { useAuth } from '../contexts/AuthContext'
 
 function SignUpScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(null);
-
+    const [loading, setLoading] = useState(false);
+    const {signup} =useAuth();
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setLoading(true);
         if (password !== confirmPassword) {
             setError("Password do not match");
             return;
         }
 
         try {
-            const res = await createUserWithEmailAndPassword(auth, email, password)
-            console.log(res)
+            // const res = await createUserWithEmailAndPassword(auth, email, password)
+            // console.log(res)
+            await signup(email, password)
         } catch (err) {
             setError(err.message)
+        }finally{
+            setLoading(false)
         }
 
     };
@@ -30,6 +34,7 @@ function SignUpScreen() {
         <>
             <h1 className="fs-4">Sign Up</h1>
             {error && <Alert variant="danger">{error}</Alert>}
+            {loading && <Loader />}
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>

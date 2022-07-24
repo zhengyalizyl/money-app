@@ -6,17 +6,22 @@ import Header from "./components/Header";
 import { Container } from "react-bootstrap";
 import React from 'react'
 import SignUpScreen from "./pages/SignUpScreen";
+import LoginScreen from "./pages/LoginScreen";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const App = () => {
     return (
         <BrowserRouter>
-            <Header />
-            <Container>
-            <Routes>
-                <Route path='/' element={<HomeScreen />} />
-                <Route  path='/signup'  element={<SignUpScreen/>} />
-            </Routes>
-            </Container>
+            <AuthProvider>
+                <Header />
+                <Container>
+                    <Routes>
+                        <Route path='/' element={<HomeScreen />} />
+                        <Route path='/signup' element={<SignUpScreen />} />
+                        <Route path="/login" element={<LoginScreen />} />
+                    </Routes>
+                </Container>
+            </AuthProvider>
         </BrowserRouter>
     )
 }
