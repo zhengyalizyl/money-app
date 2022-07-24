@@ -5,7 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useAuth } from '../contexts/AuthContext'
 
 function Header() {
-    const { logout } = useAuth();
+    const { logout,currentUser } = useAuth();
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -19,18 +19,17 @@ function Header() {
                     <Nav className="me-auto">
                     </Nav>
                     <Nav>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item onClick={logout}>
-                                Logout
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                        <>
+                        {currentUser?(
+                             <NavDropdown title={currentUser.email} id="basic-nav-dropdown">
+                             <NavDropdown.Item href="#action/3.1">Settings</NavDropdown.Item>
+                             <NavDropdown.Divider />
+                             <NavDropdown.Item onClick={logout}>
+                                 Logout
+                             </NavDropdown.Item>
+                         </NavDropdown>
+                        )
+                        :(
+                            <>
                             <LinkContainer to="/login">
                                 <Nav.Link>Login</Nav.Link>
                             </LinkContainer>
@@ -38,6 +37,8 @@ function Header() {
                                 <Nav.Link>Sign Up</Nav.Link>
                             </LinkContainer>
                         </>
+                        )}
+                       
                     </Nav>
                 </Navbar.Collapse>
             </Container>

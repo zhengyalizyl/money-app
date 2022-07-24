@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import Loader from '../components/Loader'
 import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from "react-router-dom";
 
 function SignUpScreen() {
     const [email, setEmail] = useState("");
@@ -9,7 +10,16 @@ function SignUpScreen() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const {signup} =useAuth();
+    const navigate = useNavigate();
+    const {signup,currentUser} =useAuth();
+    
+    useEffect(() => {
+        if (currentUser) {
+            navigate('/')
+        }
+    }, [currentUser])
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
